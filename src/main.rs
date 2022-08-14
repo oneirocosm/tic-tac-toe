@@ -28,8 +28,10 @@ impl GameEngine {
                 Err(e) => {
                     println!("Fatal Error: {}", e);
                     return Err(e);
-                },
-                Ok(state) => {self.state = state;},
+                }
+                Ok(state) => {
+                    self.state = state;
+                }
             }
         }
     }

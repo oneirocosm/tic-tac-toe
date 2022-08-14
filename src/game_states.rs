@@ -1,6 +1,6 @@
 use crate::board::Board;
 use crate::errors::TttError;
-use crate::player_move_states::{PlayerMoveState, PlayerMoveRequest};
+use crate::player_move_states::{PlayerMoveRequest, PlayerMoveState};
 
 const MAX_PLAYERS: u8 = 2;
 
@@ -55,20 +55,21 @@ impl GameState for GameEnterInfo {
 
 impl GamePlayerMove {
     pub fn new(player_id: u8) -> Self {
-        Self {
-            player_id,
-        }
+        Self { player_id }
     }
 }
 
 impl GameState for GamePlayerMove {
     fn run(&self, board: &mut Board) -> Result<(), TttError> {
-        let mut player_state: Box<dyn PlayerMoveState> = Box::new(PlayerMoveRequest::new(self.player_id));
+        let mut player_state: Box<dyn PlayerMoveState> =
+            Box::new(PlayerMoveRequest::new(self.player_id));
         loop {
             match player_state.run(board) {
                 Err(TttError::StatesOver) => return Ok(()),
                 Err(e) => return Err(e),
-                Ok(state) => {player_state = state;},
+                Ok(state) => {
+                    player_state = state;
+                }
             }
         }
     }

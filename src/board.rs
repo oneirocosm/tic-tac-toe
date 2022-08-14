@@ -1,6 +1,6 @@
-use std::collections::{BTreeSet, HashMap, HashSet};
 use crate::coordinate::Coordinate;
 use crate::errors::TttError;
+use std::collections::{BTreeSet, HashMap, HashSet};
 
 const OUT_UP_LEFT: char = '\u{2554}';
 const OUT_UP_RIGHT: char = '\u{2557}';
@@ -110,13 +110,19 @@ impl Board {
 
     fn get_coord(&self, y: i8, x: i8) -> Result<&str, TttError> {
         let coord: Coordinate<i8> = Coordinate::new(y, x);
-        if self.cur_state.get(&1)
+        if self
+            .cur_state
+            .get(&1)
             .ok_or(TttError::NoPlayer(1))?
-            .contains(&coord) {
+            .contains(&coord)
+        {
             Ok("X")
-        } else if self.cur_state.get(&2)
+        } else if self
+            .cur_state
+            .get(&2)
             .ok_or(TttError::NoPlayer(2))?
-            .contains(&coord) {
+            .contains(&coord)
+        {
             Ok("O")
         } else {
             Ok(" ")
@@ -124,22 +130,28 @@ impl Board {
     }
 
     pub fn get_name(&self, player_id: u8) -> Result<String, TttError> {
-        Ok(self.names
+        Ok(self
+            .names
             .get(&player_id)
             .ok_or(TttError::NoPlayer(player_id))?
             .clone())
     }
 
     pub fn check_win(&self, player_id: u8) -> Result<bool, TttError> {
-        let player_coords = self.cur_state.get(&player_id)
+        let player_coords = self
+            .cur_state
+            .get(&player_id)
             .ok_or(TttError::NoPlayer(player_id))?;
-        Ok(self.win_states
+        Ok(self
+            .win_states
             .iter()
             .any(|win_state| win_state.is_subset(player_coords)))
     }
 
     pub fn is_full(&self) -> Result<bool, TttError> {
-        Ok(self.cur_state.get(&0)
+        Ok(self
+            .cur_state
+            .get(&0)
             .ok_or(TttError::NoPlayer(0))?
             .is_empty())
     }

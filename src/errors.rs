@@ -1,5 +1,5 @@
-use std::{error::Error, fmt};
 use crate::coordinate::Coordinate;
+use std::{error::Error, fmt};
 
 #[derive(Debug, Clone)]
 pub enum TttError {
